@@ -1,0 +1,54 @@
+@import './base.css';
+
+body {
+  background-color: black;
+  display: flex; 
+  align-items: flex-start; 
+  flex-direction: column; /* Añadido para hacer que el contenido se apile verticalmente en dispositivos móviles */
+  font-family: 'Press Start 2P', Arial, Helvetica, sans-serif;
+} 
+
+#app {
+  display: flex; /* Esto hace que #app sea un contenedor flexbox */
+  flex-direction: column; /* Añadido para hacer que el contenido se apile verticalmente en dispositivos móviles */
+  width: 100%; /* Añadido para hacer que #app ocupe todo el ancho disponible */
+}
+
+.column {
+  flex: 1; /* Esto hace que cada columna ocupe el mismo espacio */
+  margin: 0 10px; /* Esto añade un poco de margen entre las columnas */
+  box-sizing: border-box; /* Esto hace que el margen se incluya en el ancho de la columna */
+  width: 100%; /* Añadido para hacer que las columnas ocupen todo el ancho disponible en dispositivos móviles */
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    align-items: flex-start; /* Cambiado de 'center' a 'flex-start' para alinear los elementos al inicio del cuerpo */
+    flex-direction: row; /* Cambiado de 'column' a 'row' para hacer que el contenido se alinee horizontalmente en dispositivos más grandes */
+  }
+
+  #app {
+    display: flex; /* Cambiado de 'grid' a 'flex' para hacer que #app sea un contenedor flexbox */
+    flex-direction: row; /* Añadido para poner la barra de navegación a la izquierda */
+    padding: 0 2rem;
+  }
+
+  .column {
+    width: auto; /* Cambiado de '100%' a 'auto' para permitir que las columnas se redimensionen automáticamente en dispositivos más grandes */
+  }
+}
