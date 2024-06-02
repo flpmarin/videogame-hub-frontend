@@ -116,4 +116,13 @@ ul {
 .game-item:last-child {
   border-bottom: none;
 }
+
+input::placeholder, input {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+}
+
+.search-button {
+  background-color: #39FF14;
+}
 </style>

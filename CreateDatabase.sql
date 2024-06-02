@@ -9,13 +9,6 @@ CREATE TABLE IF NOT EXISTS plataformas (
   descripcion TEXT
 );
  
--- Tabla de Desarrolladores
-CREATE TABLE IF NOT EXISTS desarrolladores (
-  id BIGINT PRIMARY KEY auto_increment,
-  nombre VARCHAR(50) NOT NULL,
-  descripcion TEXT
-);
- 
 -- Tabla de Géneros
 CREATE TABLE IF NOT EXISTS generos (
   id BIGINT PRIMARY KEY auto_increment,
@@ -43,12 +36,10 @@ CREATE TABLE IF NOT EXISTS videojuegos (
   id_Plataforma BIGINT NOT NULL,
   id_Fecha_Lanzamiento BIGINT NOT NULL,
   id_Genero BIGINT NOT NULL,
-  id_Desarrollador BIGINT NOT NULL,
   descripcion TEXT,
   FOREIGN KEY (id_Plataforma) REFERENCES plataformas(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (id_Fecha_Lanzamiento) REFERENCES fechas(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (id_Genero) REFERENCES generos(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (id_Desarrollador) REFERENCES desarrolladores(id) ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY (id_Genero) REFERENCES generos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
  
 -- Tabla de Calificaciones
@@ -59,4 +50,13 @@ CREATE TABLE IF NOT EXISTS calificaciones (
   calificacion DECIMAL(2,1) NOT NULL,
   FOREIGN KEY (id_Videojuego) REFERENCES videojuegos(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (id_Usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS usuarios_videojuegos (
+  id BIGINT PRIMARY KEY auto_increment,
+  id_Usuario BIGINT NOT NULL,
+  id_Videojuego BIGINT NOT NULL,
+  fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_Usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (id_Videojuego) REFERENCES videojuegos(id) ON UPDATE CASCADE ON DELETE CASCADE
 );

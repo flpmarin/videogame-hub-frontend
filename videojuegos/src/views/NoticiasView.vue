@@ -11,7 +11,6 @@
       <a :href="noticia.url" target="_blank" class="enlace_noticia">Leer más</a>
     </div>
   </div>
-  <button @click="gotoHome">go to home</button>
 </template>
 
 <script setup>

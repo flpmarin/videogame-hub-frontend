@@ -43,3 +43,11 @@ INSERT INTO calificaciones (id, id_Videojuego, id_Usuario, calificacion) VALUES
 (1, 1, 1, 4.5),
 (2, 2, 2, 5.0),
 (3, 3, 3, 4.8);
+
+INSERT INTO usuarios_videojuegos (id_Usuario, id_Videojuego) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 1),
+(3, 2),
+(3, 3);

@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NoticiasView from '../views/NoticiasView.vue'
 import MiEspacioView from '../views/MiEspacioView.vue'
-import BuscadorView from '../views/BuscadorView.vue'
 import LoginView from '../views/LoginView.vue'
 import VideojuegosView from '../views/VideojuegosView.vue'
 
@@ -24,11 +23,6 @@ const router = createRouter({
       path: '/mi_espacio',
       name: 'mi_espacio',
       component: MiEspacioView
-    },
-    {
-      path: '/buscador',
-      name: 'buscador',
-      component: BuscadorView
     },
     {
       path: '/login',

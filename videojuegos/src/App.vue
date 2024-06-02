@@ -2,6 +2,8 @@
 import { useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue';
 import logo from '@/assets/icono.png';
+import bgImageIzq from '@/assets/img-col-izq.svg';
+
 
 export default {
   setup() {
@@ -17,14 +19,14 @@ export default {
       menuVisible.value = false;
     };
 
-    return { route, menuVisible, toggleMenu, hideMenu, logo: logo };
+    return { route, menuVisible, toggleMenu, hideMenu, logo: logo, bgImageIzq: bgImageIzq };
   }
 }
 </script>
 <template>
   <div id="main-container">
     <button id="menu-button" class="mobile-only material-icons" @click="toggleMenu">menu</button>
-    <nav class="column" id="menu" :class="{ 'mobile-visible': menuVisible }">
+    <nav class="column" id="menu" :class="{ 'mobile-visible': menuVisible }":style="{ backgroundImage: `url(${bgImageIzq})` }">
       <div class="logo-container">
         <img :src="logo" alt="Logo" class="logo">
       </div>
@@ -37,9 +39,6 @@ export default {
         </li>
         <li>
           <RouterLink to="/mi_espacio" @click.native="hideMenu">Mi espacio</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/buscador" @click.native="hideMenu">Buscador</RouterLink>
         </li>
         <li>
           <RouterLink to="/videojuegos" @click.native="hideMenu">Videojuegos</RouterLink>
@@ -57,7 +56,13 @@ export default {
       <router-view />
     </div>
     <div class="column" id="redes" :class="{ 'mobile-visible': !menuVisible }">
-      <!-- Aquí va el contenido de las redes -->
+      <h2>Redes Sociales</h2>
+      <ul class="nav-list">
+        <li>Tiktok</li>
+        <li>X</li>
+        <li>Instagram</li>
+        <br>
+        <li><a href="https://whatoplay.com/" target="_blank">WhatToPlay</a></li>      </ul>
     </div>
   </div>
 </template>
@@ -77,6 +82,7 @@ export default {
 .column {
   flex: 1;
   padding: 10px;
+  margin: 0px;
   box-sizing: border-box;
   color: white;
   font-weight: 700;
@@ -101,10 +107,19 @@ export default {
   color: #39FF14;
   background-color: black;
   border: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Añade una sombra al texto */
 }
 
 #menu-button:active {
-  color: purple;
+  color: yellow;
+
+}
+
+#menu {
+  background-size: cover;
+  background-position: center;
+  position: relative; /* Asegúrate de que #menu tenga position: relative */
+  height: 100vh; /* Añade esta línea */
 }
 
 .mobile-only {
@@ -137,6 +152,8 @@ export default {
     opacity: 0;
     overflow: hidden;
     transition: max-height 0.5s ease, opacity 0.5s ease;
+    background-image: none;
+    
   }
 
   #menu.mobile-visible {
@@ -151,13 +168,14 @@ export default {
   }
 
   .nav-list li {
-    text-align: center;
-    font-size: 20px;
-    transition: 0.3s ease;
-  }
+  margin-bottom: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.5); /* Añade un fondo semi-transparente */
+  padding: 0.5rem; /* Añade un poco de padding para dar espacio al texto */
+  color: #fff; /* Cambia el color del texto a blanco para un mayor contraste */
+}
 
   .nav-list li:hover {
-    background-color: red;
+    background-color: greenyellow;
     /* Cambia el color al verde cuando se pasa el cursor sobre el elemento */
   }
 
