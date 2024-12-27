@@ -19,15 +19,17 @@
         <label class="custom-checkbox">
           <input type="checkbox" :value="videojuego.id" v-model="selectedVideojuegos" class="game-checkbox" />
           <span class="checkmark"></span>
-          <!-- Aquí el título -->
-          <span class="game-title">{{ videojuego.titulo }}</span>
 
-          <!-- Tooltip dentro del label -->
-          <div class="tooltip">
-            {{ videojuego.descripcion }}
-          </div>
+          <span class="game-title">
+            {{ videojuego.titulo }}
+            <!-- Ahora sí es hijo de .game-title -->
+            <div class="tooltip">
+              {{ videojuego.descripcion }}
+            </div>
+          </span>
         </label>
       </li>
+
     </ul>
   </div>
 </template>
@@ -131,10 +133,11 @@ const hideTooltip = () => {
   gap: 10px;
   justify-content: center;
   margin-bottom: 20px;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en dispositivos móviles */
+  flex-wrap: wrap;
+  /* Permite que los elementos se envuelvan en dispositivos móviles */
   position: sticky;
   top: 0;
-  background-color: white;
+  background-color: rgba(0, 0, 0, 0.638);
   z-index: 1000;
   padding: 10px;
 }
@@ -147,15 +150,19 @@ const hideTooltip = () => {
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
-  flex: 1 1 100%; /* Permite que los elementos ocupen el 100% del ancho en dispositivos móviles */
-  margin-bottom: 10px; /* Espacio entre los elementos en dispositivos móviles */
+  flex: 1 1 100%;
+  /* Permite que los elementos ocupen el 100% del ancho en dispositivos móviles */
+  margin-bottom: 10px;
+  /* Espacio entre los elementos en dispositivos móviles */
 }
 
 .search-input {
-  flex: 2 1 100%; /* Permite que el input de búsqueda sea más ancho */
+  flex: 2 1 100%;
+  /* Permite que el input de búsqueda sea más ancho */
 }
 
-.search-button, .save-button {
+.search-button,
+.save-button {
   background-color: hsla(160, 100%, 37%, 1);
   color: black;
   border: none;
@@ -163,7 +170,8 @@ const hideTooltip = () => {
   font-family: 'Press Start 2P', Arial, Helvetica, sans-serif;
 }
 
-.search-button:hover, .save-button:hover {
+.search-button:hover,
+.save-button:hover {
   background-color: hsla(160, 100%, 37%, 1);
 }
 
@@ -178,6 +186,8 @@ const hideTooltip = () => {
 }
 
 .game-item {
+  display: flex;
+  align-items: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
   position: relative;
@@ -187,12 +197,14 @@ const hideTooltip = () => {
   border-bottom: none;
 }
 
-input::placeholder, input {
+input::placeholder,
+input {
   font-family: 'Press Start 2P', cursive;
   font-size: 14px;
 }
 
-.search-button, .save-button {
+.search-button,
+.save-button {
   background-color: #39FF14;
 }
 
@@ -204,36 +216,41 @@ input::placeholder, input {
 }
 
 .game-title {
-  position: relative;     
-  display: inline-block;  /* Amplía el área clickable */
-  font-size: 14px;        
+  position: relative;
+  display: inline-block;
+  /* Amplía el área clickable */
+  font-size: 14px;
   margin: 0;
-  padding: 4px 6px;       
-  cursor: pointer;      
+  padding: 4px 6px;
+  cursor: pointer;
 }
 
 .tooltip {
   position: absolute;
-  top: 100%;               /* Posicionar justo debajo del título */
-  left: 50%;               
-  transform: translateX(-50%); 
-  
+  top: 100%;
+  /* Posicionar justo debajo del título */
+  left: 50%;
+  transform: translateX(-50%);
+
   background-color: #333;
   color: #fff;
   padding: 6px 8px;
-  font-size: 10px;         /* Letra un poco más pequeña */
+  font-size: 10px;
+  /* Letra un poco más pequeña */
   border-radius: 4px;
   z-index: 999;
-  
+
   /* Limitar a 4 líneas */
-  max-width: 300px;        /* Ajusta el ancho máximo según sea necesario */
-  display: -webkit-box;    /* Necesario para line-clamp en WebKit */
+  max-width: 300px;
+  /* Ajusta el ancho máximo según sea necesario */
+  display: -webkit-box;
+  /* Necesario para line-clamp en WebKit */
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 6;   
-  line-clamp: 6;           
-  overflow: hidden;        
-  white-space: normal;     
-  
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  overflow: hidden;
+  white-space: normal;
+
   /* Esconder por defecto */
   opacity: 0;
   visibility: hidden;
@@ -246,16 +263,20 @@ input::placeholder, input {
 }
 
 @media (min-width: 600px) {
+
   .search-input,
   .search-select,
   .search-button,
   .save-button {
-    flex: 1; /* Permite que los elementos se alineen en una sola fila en pantallas más grandes */
-    margin-bottom: 0; /* Elimina el espacio entre los elementos en pantallas más grandes */
+    flex: 1;
+    /* Permite que los elementos se alineen en una sola fila en pantallas más grandes */
+    margin-bottom: 0;
+    /* Elimina el espacio entre los elementos en pantallas más grandes */
   }
 
   .search-input {
-    flex: 2; /* Permite que el input de búsqueda sea más ancho en pantallas más grandes */
+    flex: 2;
+    /* Permite que el input de búsqueda sea más ancho en pantallas más grandes */
   }
 }
 </style>
