@@ -4,12 +4,17 @@
     <div class="search-bar">
       <input type="text" v-model="search" placeholder="Buscar videojuegos..." @keyup="filtrarPorNombre" class="search-input">
       <select v-model="selectedPlatform" @change="filtrarPorPlataforma" class="search-select search-button">
+        <option value="" disabled selected>Plataforma</option>
         <option v-for="plataforma in plataformas" :key="plataforma.id" :value="plataforma.id">{{plataforma.nombre}}</option>
       </select>
+      <button @click="guardarVideojuegosSeleccionados" class="save-button">+</button>
     </div>
     <p v-if="loading" class="loading">Obteniendo listado de juegos...</p>
     <ul v-else class="games-list">
-      <li v-for="videojuego in videojuegosFiltrados" :key="videojuego.id" class="game-item">{{ videojuego.titulo }}</li>
+      <li v-for="videojuego in videojuegosFiltrados" :key="videojuego.id" class="game-item">
+        <input type="checkbox" :value="videojuego.id" v-model="selectedVideojuegos">
+        {{ videojuego.titulo }}
+      </li>
     </ul>
   </div>
 </template>
@@ -19,6 +24,8 @@
 import { onMounted, ref } from 'vue';
 import VideojuegoService from '@/services/VideojuegoService';
 import PlataformaService from '@/services/PlataformaService';
+import UsuarioVideojuegoService from '@/services/UsuarioVideojuegoService';
+
  
 const videojuegos = ref([]);
 const videojuegosFiltrados = ref([])
@@ -26,6 +33,7 @@ const loading = ref(true);
 const search = ref('');
 const selectedPlatform = ref('');
 const plataformas = ref([])
+const selectedVideojuegos = ref([]);
  
 onMounted(async () => {
   loading.value = true;
@@ -44,6 +52,25 @@ const filtrarPorNombre = () => {
  
 const filtrarPorPlataforma = () => {
   videojuegosFiltrados.value = videojuegos.value.filter(juego => juego.id_Plataforma == selectedPlatform.value)
+};
+
+const guardarVideojuegosSeleccionados = async () => {
+  const usuarioId = localStorage.getItem('usuarioId');
+  if (!usuarioId) {
+    console.error('Usuario no identificado');
+    return;
+  }
+
+  try {
+    const usuarioVideojuegoService = new UsuarioVideojuegoService();
+    for (const videojuegoId of selectedVideojuegos.value) {
+      await usuarioVideojuegoService.addVideojuegoToUsuario(usuarioId, videojuegoId);
+    }
+    alert('Videojuegos guardados exitosamente');
+    selectedVideojuegos.value = []; // Vaciar la lista de videojuegos seleccionados
+  } catch (error) {
+    console.error('Error al guardar los videojuegos:', error);
+  }
 };
 </script>
 
@@ -74,7 +101,8 @@ ul {
 
 .search-input,
 .search-select,
-.search-button {
+.search-button,
+.save-button {
   padding: 10px;
   font-size: 1em;
   border: 1px solid #ccc;
@@ -85,7 +113,7 @@ ul {
   flex: 1;
 }
 
-.search-button {
+.search-button, .save-button {
   background-color: hsla(160, 100%, 37%, 1);
   color: black;
   border: none;
@@ -93,7 +121,7 @@ ul {
   font-family: 'Press Start 2P', Arial, Helvetica, sans-serif;
 }
 
-.search-button:hover {
+.search-button:hover, .save-button:hover {
   background-color:hsla(160, 100%, 37%, 1);
 }
 
@@ -121,7 +149,7 @@ input::placeholder, input {
   font-size: 14px;
 }
 
-.search-button {
+.search-button, .save-button {
   background-color: #39FF14;
 }
 </style>
