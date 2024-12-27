@@ -1,4 +1,3 @@
-// src/services/UsuarioVideojuegoService.js
 export default class UsuarioVideojuegoService {
   baseUri = "http://127.0.0.1:8080/api/usuarios_videojuegos";
 
@@ -23,6 +22,11 @@ export default class UsuarioVideojuegoService {
         'Content-Type': 'application/json',
       },
     });
+
+    if (rawResponse.status === 409) {
+      throw new Error('La relación ya existe');
+    }
+
     const response = await rawResponse.json();
     return response;
   }
@@ -30,6 +34,9 @@ export default class UsuarioVideojuegoService {
   async removeVideojuegoFromUsuario(usuarioId, videojuegoId) {
     const rawResponse = await fetch(`${this.baseUri}?usuarioId=${usuarioId}&videojuegoId=${videojuegoId}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
     if (!rawResponse.ok) {
       throw new Error('Error al eliminar el videojuego');

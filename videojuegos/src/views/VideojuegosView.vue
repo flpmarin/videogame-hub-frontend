@@ -64,7 +64,15 @@ const guardarVideojuegosSeleccionados = async () => {
   try {
     const usuarioVideojuegoService = new UsuarioVideojuegoService();
     for (const videojuegoId of selectedVideojuegos.value) {
-      await usuarioVideojuegoService.addVideojuegoToUsuario(usuarioId, videojuegoId);
+      try {
+        await usuarioVideojuegoService.addVideojuegoToUsuario(usuarioId, videojuegoId);
+      } catch (error) {
+        if (error.message === 'La relación ya existe') {
+          console.warn(`El videojuego con ID ${videojuegoId} ya está asociado al usuario.`);
+        } else {
+          throw error;
+        }
+      }
     }
     alert('Videojuegos guardados exitosamente');
     selectedVideojuegos.value = []; // Vaciar la lista de videojuegos seleccionados
