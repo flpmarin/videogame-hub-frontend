@@ -99,7 +99,7 @@ const guardarVideojuegosSeleccionados = async () => {
       }
     }
     alert('Videojuegos guardados exitosamente');
-    selectedVideojuegos.value = []; // Vaciar la lista de videojuegos seleccionados
+    selectedVideojuegos.value = []; // Vaciar la lista 
   } catch (error) {
     console.error('Error al guardar los videojuegos:', error);
   }
@@ -134,7 +134,6 @@ const hideTooltip = () => {
   justify-content: center;
   margin-bottom: 20px;
   flex-wrap: wrap;
-  /* Permite que los elementos se envuelvan en dispositivos móviles */
   position: sticky;
   top: 0;
   background-color: rgba(0, 0, 0, 0.638);
@@ -151,14 +150,11 @@ const hideTooltip = () => {
   border: 1px solid #ccc;
   border-radius: 4px;
   flex: 1 1 100%;
-  /* Permite que los elementos ocupen el 100% del ancho en dispositivos móviles */
   margin-bottom: 10px;
-  /* Espacio entre los elementos en dispositivos móviles */
 }
 
 .search-input {
   flex: 2 1 100%;
-  /* Permite que el input de búsqueda sea más ancho */
 }
 
 .search-button,
@@ -193,6 +189,10 @@ const hideTooltip = () => {
   position: relative;
 }
 
+.game-item:hover {
+  background-color: #f9f9f98e;
+}
+
 .game-item:last-child {
   border-bottom: none;
 }
@@ -218,7 +218,6 @@ input {
 .game-title {
   position: relative;
   display: inline-block;
-  /* Amplía el área clickable */
   font-size: 14px;
   margin: 0;
   padding: 4px 6px;
@@ -228,7 +227,6 @@ input {
 .tooltip {
   position: absolute;
   top: 100%;
-  /* Posicionar justo debajo del título */
   left: 50%;
   transform: translateX(-50%);
 
@@ -236,15 +234,11 @@ input {
   color: #fff;
   padding: 6px 8px;
   font-size: 10px;
-  /* Letra un poco más pequeña */
   border-radius: 4px;
   z-index: 999;
 
-  /* Limitar a 4 líneas */
   max-width: 300px;
-  /* Ajusta el ancho máximo según sea necesario */
   display: -webkit-box;
-  /* Necesario para line-clamp en WebKit */
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 6;
   line-clamp: 6;
@@ -269,14 +263,11 @@ input {
   .search-button,
   .save-button {
     flex: 1;
-    /* Permite que los elementos se alineen en una sola fila en pantallas más grandes */
     margin-bottom: 0;
-    /* Elimina el espacio entre los elementos en pantallas más grandes */
   }
 
   .search-input {
     flex: 2;
-    /* Permite que el input de búsqueda sea más ancho en pantallas más grandes */
   }
 }
 </style>

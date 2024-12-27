@@ -32,21 +32,21 @@ export default {
       </div>
       <ul class="nav-list">
         <li>
-          <RouterLink to="/" @click.native="hideMenu">Home</RouterLink>
+          <RouterLink :to="{ name: 'home'}" @click.native="hideMenu">Home</RouterLink>
         </li>
         <li>
-          <RouterLink to="/noticias" @click.native="hideMenu">Noticias</RouterLink>
+          <RouterLink :to="{ name: 'noticias'}" @click.native="hideMenu">Noticias</RouterLink>
         </li>
         <li>
-          <RouterLink to="/mi_espacio" @click.native="hideMenu">Mi espacio</RouterLink>
+            <RouterLink :to="{ name: 'mi_espacio' }" @click.native="hideMenu">Mi lista</RouterLink>
         </li>
         <li>
-          <RouterLink to="/videojuegos" @click.native="hideMenu">Videojuegos</RouterLink>
+          <RouterLink :to="{ name: 'videojuegos'}" @click.native="hideMenu">Videojuegos</RouterLink>
         </li>
       </ul>
       <ul class="nav-list">
         <li>
-          <RouterLink to="/login" @click.native="hideMenu">Login</RouterLink>
+          <RouterLink :to="{ name: 'login'}"@click.native="hideMenu">Login</RouterLink>
         </li>
       </ul>
     </nav>

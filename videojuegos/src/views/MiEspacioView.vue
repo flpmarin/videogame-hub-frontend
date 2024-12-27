@@ -7,10 +7,15 @@
     <h2>Mis Videojuegos</h2>
     <ul>
       <li v-for="videojuego in videojuegos" :key="videojuego.id">
+        <button @click="removeVideojuego(videojuego.id)">Ｘ</button>
         {{ videojuego.titulo }}
-        <button @click="removeVideojuego(videojuego.id)">Eliminar</button>
       </li>
     </ul>
+
+   <div class="share-buttons">
+      <button @click="shareOnReddit">Compartir en Reddit</button>
+      <button @click="shareOnDiscord">Compartir en Discord</button>
+    </div>
   </div>
 </template>
 
@@ -76,6 +81,23 @@ const logout = () => {
   nombreUsuario.value = ''; // Resetear el nombre de usuario
   router.push('/'); // Redirigir a la página de inicio
 };
+
+const generateShareText = () => {
+  return `Mis Videojuegos:\n${videojuegos.value.map(v => v.titulo).join('\n')}`;
+};
+
+
+const shareOnReddit = () => {
+  const text = encodeURIComponent(generateShareText());
+  const url = `https://www.reddit.com/submit?title=Mis%20Videojuegos&text=${text}`;
+  window.open(url, '_blank');
+};
+
+const shareOnDiscord = () => {
+  const text = encodeURIComponent(generateShareText());
+  const url = `https://discord.com/channels/@me?text=${text}`;
+  window.open(url, '_blank');
+};
 </script>
 
 <style scoped>
@@ -88,9 +110,18 @@ button {
   background-color: #39FF14;
   padding: 10px;
   border-radius: 5px;
+  margin: 5px;
 }
 
 input {
   width: 250px; 
+}
+
+.share-buttons {
+  margin-top: 20px;
+}
+
+.share-buttons button {
+  margin-right: 10px;
 }
 </style>
