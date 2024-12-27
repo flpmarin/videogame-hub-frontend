@@ -2,22 +2,37 @@
   <div class="container">
     <h1 class="title">Videojuegos</h1>
     <div class="search-bar">
-      <input type="text" v-model="search" placeholder="Buscar videojuegos..." @keyup="filtrarPorNombre" class="search-input">
+      <input type="text" v-model="search" placeholder="Buscar videojuegos..." @keyup="filtrarPorNombre"
+        class="search-input">
       <select v-model="selectedPlatform" @change="filtrarPorPlataforma" class="search-select search-button">
         <option value="" disabled selected>Plataforma</option>
-        <option v-for="plataforma in plataformas" :key="plataforma.id" :value="plataforma.id">{{plataforma.nombre}}</option>
+        <option v-for="plataforma in plataformas" :key="plataforma.id" :value="plataforma.id">
+          {{ plataforma.nombre }}
+        </option>
       </select>
       <button @click="guardarVideojuegosSeleccionados" class="save-button">+</button>
     </div>
+
     <p v-if="loading" class="loading">Obteniendo listado de juegos...</p>
     <ul v-else class="games-list">
       <li v-for="videojuego in videojuegosFiltrados" :key="videojuego.id" class="game-item">
-        <input type="checkbox" :value="videojuego.id" v-model="selectedVideojuegos">
-        {{ videojuego.titulo }}
+        <label class="custom-checkbox">
+          <input type="checkbox" :value="videojuego.id" v-model="selectedVideojuegos" class="game-checkbox" />
+          <span class="checkmark"></span>
+          <!-- Aquí el título -->
+          <span class="game-title">{{ videojuego.titulo }}</span>
+
+          <!-- Tooltip dentro del label -->
+          <div class="tooltip">
+            {{ videojuego.descripcion }}
+          </div>
+        </label>
       </li>
     </ul>
   </div>
 </template>
+
+
 
 
 <script setup>
@@ -26,7 +41,7 @@ import VideojuegoService from '@/services/VideojuegoService';
 import PlataformaService from '@/services/PlataformaService';
 import UsuarioVideojuegoService from '@/services/UsuarioVideojuegoService';
 
- 
+
 const videojuegos = ref([]);
 const videojuegosFiltrados = ref([])
 const loading = ref(true);
@@ -34,22 +49,29 @@ const search = ref('');
 const selectedPlatform = ref('');
 const plataformas = ref([])
 const selectedVideojuegos = ref([]);
- 
+const tooltipVisible = ref(false);
+const currentVideojuego = ref({});
+
 onMounted(async () => {
   loading.value = true;
   const service = new VideojuegoService();
-  videojuegos.value = await service.getAllVideojuegos();
-  videojuegosFiltrados.value = videojuegos.value
- 
+  try {
+    videojuegos.value = await service.getAllVideojuegos();
+    videojuegosFiltrados.value = videojuegos.value;
+  } catch (error) {
+    console.error('Error al obtener los videojuegos:', error);
+  } finally {
+    loading.value = false;
+  }
+
   const platService = new PlataformaService();
-  plataformas.value = await platService.getAllPlataformas()
-  loading.value = false;
+  plataformas.value = await platService.getAllPlataformas();
 });
- 
+
 const filtrarPorNombre = () => {
   videojuegosFiltrados.value = videojuegos.value.filter(juego => juego.titulo.toLowerCase().includes(search.value.toLocaleLowerCase()))
 }
- 
+
 const filtrarPorPlataforma = () => {
   videojuegosFiltrados.value = videojuegos.value.filter(juego => juego.id_Plataforma == selectedPlatform.value)
 };
@@ -80,6 +102,15 @@ const guardarVideojuegosSeleccionados = async () => {
     console.error('Error al guardar los videojuegos:', error);
   }
 };
+
+const showTooltip = (videojuego) => {
+  currentVideojuego.value = videojuego;
+  tooltipVisible.value = true;
+};
+
+const hideTooltip = () => {
+  tooltipVisible.value = false;
+};
 </script>
 
 <style scoped>
@@ -95,16 +126,17 @@ const guardarVideojuegosSeleccionados = async () => {
   margin-bottom: 20px;
 }
 
-ul {
-  list-style-type: none;
-  font-size: 12px;
-}
-
 .search-bar {
   display: flex;
   gap: 10px;
   justify-content: center;
   margin-bottom: 20px;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en dispositivos móviles */
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+  padding: 10px;
 }
 
 .search-input,
@@ -115,10 +147,12 @@ ul {
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
+  flex: 1 1 100%; /* Permite que los elementos ocupen el 100% del ancho en dispositivos móviles */
+  margin-bottom: 10px; /* Espacio entre los elementos en dispositivos móviles */
 }
 
 .search-input {
-  flex: 1;
+  flex: 2 1 100%; /* Permite que el input de búsqueda sea más ancho */
 }
 
 .search-button, .save-button {
@@ -130,7 +164,7 @@ ul {
 }
 
 .search-button:hover, .save-button:hover {
-  background-color:hsla(160, 100%, 37%, 1);
+  background-color: hsla(160, 100%, 37%, 1);
 }
 
 .loading {
@@ -146,6 +180,7 @@ ul {
 .game-item {
   padding: 10px;
   border-bottom: 1px solid #ccc;
+  position: relative;
 }
 
 .game-item:last-child {
@@ -159,5 +194,68 @@ input::placeholder, input {
 
 .search-button, .save-button {
   background-color: #39FF14;
+}
+
+.game-checkbox {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.game-title {
+  position: relative;     
+  display: inline-block;  /* Amplía el área clickable */
+  font-size: 14px;        
+  margin: 0;
+  padding: 4px 6px;       
+  cursor: pointer;      
+}
+
+.tooltip {
+  position: absolute;
+  top: 100%;               /* Posicionar justo debajo del título */
+  left: 50%;               
+  transform: translateX(-50%); 
+  
+  background-color: #333;
+  color: #fff;
+  padding: 6px 8px;
+  font-size: 10px;         /* Letra un poco más pequeña */
+  border-radius: 4px;
+  z-index: 999;
+  
+  /* Limitar a 4 líneas */
+  max-width: 300px;        /* Ajusta el ancho máximo según sea necesario */
+  display: -webkit-box;    /* Necesario para line-clamp en WebKit */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;   
+  line-clamp: 6;           
+  overflow: hidden;        
+  white-space: normal;     
+  
+  /* Esconder por defecto */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.game-title:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (min-width: 600px) {
+  .search-input,
+  .search-select,
+  .search-button,
+  .save-button {
+    flex: 1; /* Permite que los elementos se alineen en una sola fila en pantallas más grandes */
+    margin-bottom: 0; /* Elimina el espacio entre los elementos en pantallas más grandes */
+  }
+
+  .search-input {
+    flex: 2; /* Permite que el input de búsqueda sea más ancho en pantallas más grandes */
+  }
 }
 </style>
