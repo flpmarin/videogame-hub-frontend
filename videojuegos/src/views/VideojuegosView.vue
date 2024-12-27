@@ -3,10 +3,9 @@
     <h1 class="title">Videojuegos</h1>
     <div class="search-bar">
       <input type="text" v-model="search" placeholder="Buscar videojuegos..." @keyup="filtrarPorNombre" class="search-input">
-      <select v-model="selectedPlatform" @change="filtrarPorPlataforma" class="search-select">
+      <select v-model="selectedPlatform" @change="filtrarPorPlataforma" class="search-select search-button">
         <option v-for="plataforma in plataformas" :key="plataforma.id" :value="plataforma.id">{{plataforma.nombre}}</option>
       </select>
-      <button @click="filtrarPorPlataforma" class="search-button">Filtrar</button>
     </div>
     <p v-if="loading" class="loading">Obteniendo listado de juegos...</p>
     <ul v-else class="games-list">
